@@ -8,6 +8,7 @@ class Input extends Component {
         super(props);
         this.state = {
             task: '',
+            buttonDisable: true
 
         }
 
@@ -16,22 +17,39 @@ class Input extends Component {
     enterData = (e) => {
 
         this.setState({
-            task: e.target.value
+            task: e.target.value,
+            buttonDisable: false
         })
+
+
     }
 
-    clicked = () => {
+    clicked = (e) => {
 
         this.props.taskAction(this.state.task);
+        this.setState({
+            task: '',
+            buttonDisable: true
+        })
 
+
+
+    }
+
+    keyPress = (e) => {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            this.clicked();
+        }
 
     }
 
     render() {
         return (
             <div>
-                Enter Task:<input onChange={this.enterData} id='input-box'></input>
-                <button onClick={this.clicked}>Add</button>
+                Enter Task:<input onChange={this.enterData} id='input-box'
+                    value={this.state.task} onKeyUp={this.keyPress}></input>
+                <button onClick={this.clicked} disabled={this.state.buttonDisable}>Add</button>
             </div>
         )
     }
